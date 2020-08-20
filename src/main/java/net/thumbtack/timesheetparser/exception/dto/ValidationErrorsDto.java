@@ -12,8 +12,8 @@ public class ValidationErrorsDto {
     public ValidationErrorsDto() {
     }
 
-    public void addFieldError(ErrorCode errorCode, String message) {
-        ErrorDto error = new ErrorDto(errorCode, message);
+    public void addFieldError(ErrorCode errorCode, String field, String message) {
+        ErrorDto error = new ErrorDto(errorCode, field, message);
         errors.add(error);
     }
 

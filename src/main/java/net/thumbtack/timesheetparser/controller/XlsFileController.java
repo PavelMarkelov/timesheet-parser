@@ -5,7 +5,6 @@ import net.thumbtack.timesheetparser.exception.ErrorCode;
 import net.thumbtack.timesheetparser.exception.InvalidHeadRowException;
 import net.thumbtack.timesheetparser.exception.dto.ValidationErrorsDto;
 import net.thumbtack.timesheetparser.service.XlsParserService;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -29,23 +28,27 @@ public class XlsFileController {
     }
 
     @PostMapping("/uploadXlsFile")
-    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             ValidationErrorsDto error = new ValidationErrorsDto();
-            error.addFieldError(ErrorCode.EMPTY, ErrorCode.EMPTY.getErrorString());
+            error.addFieldError(ErrorCode.EMPTY, ErrorCode.EMPTY.toString(), ErrorCode.EMPTY.getErrorString());
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
         if (!file.getContentType().equals("application/vnd.ms-excel")) {
             ValidationErrorsDto error = new ValidationErrorsDto();
-            error.addFieldError(ErrorCode.UNS_FORMAT, ErrorCode.UNS_FORMAT.getErrorString());
+            error.addFieldError(ErrorCode.UNS_FORMAT, ErrorCode.UNS_FORMAT.toString(), ErrorCode.UNS_FORMAT.getErrorString());
             return new ResponseEntity<>(error, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
         try {
             parserService.parseXls(file);
         } catch (InvalidHeadRowException ex) {
             ValidationErrorsDto error = new ValidationErrorsDto();
-            error.addFieldError(ErrorCode.INV_HD_ROW, ex.getMessage());
+            error.addFieldError(ErrorCode.INV_HD_ROW, ErrorCode.INV_HD_ROW.toString(), ex.getMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        } catch (IOException ex) {
+            ValidationErrorsDto error = new ValidationErrorsDto();
+            error.addFieldError(ErrorCode.IO_ERR, ErrorCode.IO_ERR.toString(), ErrorCode.IO_ERR.getErrorString());
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         UploadFileResponse response = new UploadFileResponse(fileName, file.getContentType(), file.getSize());
