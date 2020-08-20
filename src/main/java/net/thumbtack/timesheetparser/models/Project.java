@@ -4,20 +4,23 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Project {
+
     private int id;
-    private int countOfTrackingRows;
     private String name;
     private LocalDate start;
     private LocalDate end;
+    private int countOfTrackingRows;
+    private double numberOfHours;
 
     public Project() {
     }
 
-    public Project(int countOfTrackingRows, String name, LocalDate start, LocalDate end) {
+    public Project(int countOfTrackingRows, String name, LocalDate start, LocalDate end, double numberOfHours) {
         this.countOfTrackingRows = countOfTrackingRows;
         this.name = name;
         this.start = start;
         this.end = end;
+        this.numberOfHours = numberOfHours;
     }
 
     public int getId() {
@@ -26,14 +29,6 @@ public class Project {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getCountOfTrackingRows() {
-        return countOfTrackingRows;
-    }
-
-    public void setCountOfTrackingRows(int countOfTrackingRows) {
-        this.countOfTrackingRows = countOfTrackingRows;
     }
 
     public String getName() {
@@ -58,6 +53,22 @@ public class Project {
 
     public void setEnd(LocalDate end) {
         this.end = end;
+    }
+
+    public int getCountOfTrackingRows() {
+        return countOfTrackingRows;
+    }
+
+    public void setCountOfTrackingRows(int countOfTrackingRows) {
+        this.countOfTrackingRows = countOfTrackingRows;
+    }
+
+    public double getNumberOfHours() {
+        return numberOfHours;
+    }
+
+    public void setNumberOfHours(double numberOfHours) {
+        this.numberOfHours = numberOfHours;
     }
 
     @Override
