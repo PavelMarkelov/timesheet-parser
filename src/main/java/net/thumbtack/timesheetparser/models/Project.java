@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Project {
     private int id;
+    private int countOfTrackingRows;
     private String name;
     private LocalDate start;
     private LocalDate end;
@@ -12,7 +13,8 @@ public class Project {
     public Project() {
     }
 
-    public Project(String name, LocalDate start, LocalDate end) {
+    public Project(int countOfTrackingRows, String name, LocalDate start, LocalDate end) {
+        this.countOfTrackingRows = countOfTrackingRows;
         this.name = name;
         this.start = start;
         this.end = end;
@@ -24,6 +26,14 @@ public class Project {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getCountOfTrackingRows() {
+        return countOfTrackingRows;
+    }
+
+    public void setCountOfTrackingRows(int countOfTrackingRows) {
+        this.countOfTrackingRows = countOfTrackingRows;
     }
 
     public String getName() {
