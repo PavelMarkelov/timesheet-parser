@@ -9,6 +9,8 @@ public class StaffMemberRequest {
     private String staffMemberName;
     @Min(value = 1, message = "Number of mounts can't be less than 1")
     private int numberOfMonths;
+    @Min(value = 0, message = "Number of hours can't be less than 0")
+    private int numberOfHours;
 
     public StaffMemberRequest() {
     }
@@ -27,5 +29,13 @@ public class StaffMemberRequest {
 
     public void setNumberOfMonths(int numberOfMonths) {
         this.numberOfMonths = numberOfMonths;
+    }
+
+    public int getNumberOfHours() {
+        return numberOfHours;
+    }
+
+    public void setNumberOfHours(int numberOfHours) {
+        this.numberOfHours = numberOfHours;
     }
 }
