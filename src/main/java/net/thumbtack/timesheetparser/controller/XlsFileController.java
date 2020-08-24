@@ -31,23 +31,23 @@ public class XlsFileController {
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             ValidationErrorsDto error = new ValidationErrorsDto();
-            error.addFieldError(ErrorCode.EMPTY, ErrorCode.EMPTY.toString(), ErrorCode.EMPTY.getErrorString());
+            error.addFieldError(ErrorCode.EMPTY_FILE, ErrorCode.EMPTY_FILE.toString(), ErrorCode.EMPTY_FILE.getErrorString());
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
         }
         if (!file.getContentType().equals("application/vnd.ms-excel")) {
             ValidationErrorsDto error = new ValidationErrorsDto();
-            error.addFieldError(ErrorCode.UNS_FORMAT, ErrorCode.UNS_FORMAT.toString(), ErrorCode.UNS_FORMAT.getErrorString());
+            error.addFieldError(ErrorCode.UNSUPPORTED_FORMAT, ErrorCode.UNSUPPORTED_FORMAT.toString(), ErrorCode.UNSUPPORTED_FORMAT.getErrorString());
             return new ResponseEntity<>(error, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
         try {
             parserService.parseXls(file);
         } catch (InvalidHeadRowException ex) {
             ValidationErrorsDto error = new ValidationErrorsDto();
-            error.addFieldError(ErrorCode.INV_HD_ROW, ErrorCode.INV_HD_ROW.toString(), ex.getMessage());
+            error.addFieldError(ErrorCode.INVALID_HEAD_ROW, ErrorCode.INVALID_HEAD_ROW.toString(), ex.getMessage());
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         } catch (IOException ex) {
             ValidationErrorsDto error = new ValidationErrorsDto();
-            error.addFieldError(ErrorCode.IO_ERR, ErrorCode.IO_ERR.toString(), ErrorCode.IO_ERR.getErrorString());
+            error.addFieldError(ErrorCode.IO_ERROR, ErrorCode.IO_ERROR.toString(), ErrorCode.IO_ERROR.getErrorString());
             return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));

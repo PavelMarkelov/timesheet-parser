@@ -32,12 +32,12 @@ public class StaffMemberServiceImpl implements StaffMemberService {
         if(developerProjectsDao.isEmptyDatabase()) {
             throw new FileNotLoadedException(ErrorCode.FILE_N_LOAD.getErrorString());
         }
-        Optional<StaffMember> staffMemberByNameOpt = developerProjectsDao.getStaffMemberByName(staffMember);
+        var staffMemberByNameOpt = developerProjectsDao.getStaffMemberByName(staffMember);
         if (staffMemberByNameOpt.isEmpty()) {
-            throw new StaffMemberNotFoundException(ErrorCode.STAFF_MEM_NOT_F.getErrorString());
+            throw new StaffMemberNotFoundException(ErrorCode.STAFF_MEMBER_NOT_FOUND.getErrorString());
         }
-        StaffMember staffMemberModel = staffMemberByNameOpt.get();
-        List<Project> staffMemberProjects = developerProjectsDao.getStaffMemberProjects(staffMemberModel, numberOfMonths, numberOfHours);
+        var staffMemberModel = staffMemberByNameOpt.get();
+        var staffMemberProjects = developerProjectsDao.getStaffMemberProjects(staffMemberModel, numberOfMonths, numberOfHours);
         return new StaffMemberResponse(staffMemberModel.getId(), staffMemberProjects);
     }
 
@@ -46,19 +46,19 @@ public class StaffMemberServiceImpl implements StaffMemberService {
         if(developerProjectsDao.isEmptyDatabase()) {
             throw new FileNotLoadedException(ErrorCode.FILE_N_LOAD.getErrorString());
         }
-        Optional<StaffMember> staffMemberOpt = developerProjectsDao.getStaffMemberById(staffMemberId);
+        var staffMemberOpt = developerProjectsDao.getStaffMemberById(staffMemberId);
         if (staffMemberOpt.isEmpty()) {
-            throw new StaffMemberNotFoundException(ErrorCode.STAFF_MEM_NOT_F.getErrorString());
+            throw new StaffMemberNotFoundException(ErrorCode.STAFF_MEMBER_NOT_FOUND.getErrorString());
         }
-        StaffMember staffMember = staffMemberOpt.get();
-        Optional<Project> projectOpt = developerProjectsDao.getProject(staffMember, projectId);
+        var staffMember = staffMemberOpt.get();
+        var projectOpt = developerProjectsDao.getProject(staffMember, projectId);
         if (projectOpt.isEmpty()) {
-            throw new ProjectNotFoundException(ErrorCode.PR_NOT_F.getErrorString());
+            throw new ProjectNotFoundException(ErrorCode.PROJECT_NOT_FOUND.getErrorString());
         }
-        Project project = projectOpt.get();
-        LocalDate startDateForRequest = project.getStart();
-        LocalDate endDateForRequest = project.getEnd();
-        Period period = Period.between(startDateForRequest, endDateForRequest);
+        var project = projectOpt.get();
+        var startDateForRequest = project.getStart();
+        var endDateForRequest = project.getEnd();
+        var period = Period.between(startDateForRequest, endDateForRequest);
         if (period.getDays() < 3) {
             startDateForRequest = startDateForRequest.minusDays(5);
             endDateForRequest = endDateForRequest.plusDays(5);

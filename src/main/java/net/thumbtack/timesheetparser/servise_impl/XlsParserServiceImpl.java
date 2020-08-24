@@ -30,29 +30,29 @@ public class XlsParserServiceImpl implements XlsParserService {
 
     @Override
     public void parseXls(MultipartFile file) throws IOException {
-        Workbook workbook = WorkbookFactory.create(file.getInputStream());
-        Sheet sheet = workbook.getSheetAt(0);
-        int firstRowNum = sheet.getFirstRowNum();
-        int[] columnsIndexes = getColumnsIndexes(sheet.getRow(firstRowNum));
-        int projectNameColumnInd = columnsIndexes[0];
-        int staffMemberColumnInd = columnsIndexes[1];
-        int dateColumnInd = columnsIndexes[2];
-        int numberOfHoursColumnInd = columnsIndexes[3];
-        String previousDeveloperName = "";
-        String projectName = "";
-        String previousProjectName = "";
-        String developerName = "";
-        LocalDate startDate = LocalDate.of(1, 1, 1);
-        LocalDate endDate = LocalDate.of(1, 1, 1);
-        int numberRowsForCurrentDeveloperInCurrentProject = 0;
-        double numberOfHours = 0;
+        var workbook = WorkbookFactory.create(file.getInputStream());
+        var sheet = workbook.getSheetAt(0);
+        var firstRowNum = sheet.getFirstRowNum();
+        var columnsIndexes = getColumnsIndexes(sheet.getRow(firstRowNum));
+        var projectNameColumnInd = columnsIndexes[0];
+        var staffMemberColumnInd = columnsIndexes[1];
+        var dateColumnInd = columnsIndexes[2];
+        var numberOfHoursColumnInd = columnsIndexes[3];
+        var previousDeveloperName = "";
+        var projectName = "";
+        var previousProjectName = "";
+        var developerName = "";
+        var startDate = LocalDate.of(1, 1, 1);
+        var endDate = LocalDate.of(1, 1, 1);
+        var numberRowsForCurrentDeveloperInCurrentProject = 0;
+        var numberOfHours = 0.0;
         for (int i = firstRowNum + 2; sheet.getRow(i) != null; i++) {
-            Row row = sheet.getRow(i);
-            Optional<Cell> projectNameCellOpt = Optional.ofNullable(row.getCell(projectNameColumnInd));
-            Optional<Cell> developerNameCellOpt = Optional.ofNullable(row.getCell(staffMemberColumnInd));
-            Optional<Cell> dateCellOpt = Optional.ofNullable(row.getCell(dateColumnInd));
-            Optional<Cell> numberOfHoursOpt = Optional.ofNullable(row.getCell(numberOfHoursColumnInd));
-            boolean isPresentData = projectNameCellOpt.isPresent() && developerNameCellOpt.isPresent() &&
+            var row = sheet.getRow(i);
+            var projectNameCellOpt = Optional.ofNullable(row.getCell(projectNameColumnInd));
+            var developerNameCellOpt = Optional.ofNullable(row.getCell(staffMemberColumnInd));
+            var dateCellOpt = Optional.ofNullable(row.getCell(dateColumnInd));
+            var numberOfHoursOpt = Optional.ofNullable(row.getCell(numberOfHoursColumnInd));
+            var isPresentData = projectNameCellOpt.isPresent() && developerNameCellOpt.isPresent() &&
                     dateCellOpt.isPresent() && numberOfHoursOpt.isPresent();
             if (isPresentData && projectNameCellOpt.get().getCellType().equals(CellType.STRING) &&
                     developerNameCellOpt.get().getCellType().equals(CellType.STRING) &&
@@ -91,10 +91,10 @@ public class XlsParserServiceImpl implements XlsParserService {
     }
 
     private int[] getColumnsIndexes(Row headRow) {
-        int projectNameColumnInd = -1;
-        int staffMemberColumnInd = -1;
-        int dateColumnInd = -1;
-        int numberOfHoursColumnInd = -1;
+        var projectNameColumnInd = -1;
+        var staffMemberColumnInd = -1;
+        var dateColumnInd = -1;
+        var numberOfHoursColumnInd = -1;
         for (Cell cell : headRow) {
             if (cell.getCellType().equals(CellType.STRING)) {
                 String cellValue = cell.getRichStringCellValue().getString();
@@ -113,7 +113,7 @@ public class XlsParserServiceImpl implements XlsParserService {
             }
         }
         if (projectNameColumnInd == -1 || staffMemberColumnInd == -1 || dateColumnInd == -1 || numberOfHoursColumnInd == -1) {
-            throw new InvalidHeadRowException(ErrorCode.INV_HD_ROW.getErrorString());
+            throw new InvalidHeadRowException(ErrorCode.INVALID_HEAD_ROW.getErrorString());
         }
         return new int[]{projectNameColumnInd, staffMemberColumnInd, dateColumnInd, numberOfHoursColumnInd};
     }

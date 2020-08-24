@@ -2,14 +2,14 @@ package net.thumbtack.timesheetparser.exception;
 
 public enum ErrorCode {
 
-    UNS_FORMAT("This file format if not supported"),
-    EMPTY("XLS file is not selected"),
-    INV_HD_ROW("Missing columns with \"Staff Member\" or \"Date\" or \"Project\" name"),
-    IO_ERR("Something went wrong. Try uploading the file again"),
-    FIELD("Field error"),
-    STAFF_MEM_NOT_F("Staff member with specified name is not found"),
+    UNSUPPORTED_FORMAT("This file format if not supported"),
+    EMPTY_FILE("XLS file is not selected"),
+    INVALID_HEAD_ROW("Missing columns with \"Staff Member\" or \"Date\" or \"Project\" name"),
+    IO_ERROR("Something went wrong. Try uploading the file again"),
+    FIELD_ERROR("Field error"),
+    STAFF_MEMBER_NOT_FOUND("Staff member with specified name is not found"),
     FILE_N_LOAD("Excel file not loaded"),
-    PR_NOT_F("Project not found");
+    PROJECT_NOT_FOUND("Project not found");
 
     private String errorString;
 

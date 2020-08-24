@@ -50,7 +50,7 @@ public class StaffMemberController {
         fieldErrors.forEach(fieldError -> {
             String field = fieldError.getField();
             String errorMessage = fieldError.getDefaultMessage();
-            veDto.addFieldError(ErrorCode.FIELD, field, errorMessage);
+            veDto.addFieldError(ErrorCode.FIELD_ERROR, field, errorMessage);
         });
         return new ResponseEntity<>(veDto, HttpStatus.BAD_REQUEST);
     }
@@ -65,14 +65,14 @@ public class StaffMemberController {
     @ExceptionHandler(StaffMemberNotFoundException.class)
     public ResponseEntity<ValidationErrorsDto> handleStaffMemberNotFoundException(StaffMemberNotFoundException ex) {
         ValidationErrorsDto error = new ValidationErrorsDto();
-        error.addFieldError(ErrorCode.STAFF_MEM_NOT_F, ErrorCode.STAFF_MEM_NOT_F.toString(), ex.getMessage());
+        error.addFieldError(ErrorCode.STAFF_MEMBER_NOT_FOUND, ErrorCode.STAFF_MEMBER_NOT_FOUND.toString(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ProjectNotFoundException.class)
     public ResponseEntity<ValidationErrorsDto> handleProjectNotFoundException(ProjectNotFoundException ex) {
         ValidationErrorsDto error = new ValidationErrorsDto();
-        error.addFieldError(ErrorCode.PR_NOT_F, ErrorCode.PR_NOT_F.toString(), ex.getMessage());
+        error.addFieldError(ErrorCode.PROJECT_NOT_FOUND, ErrorCode.PROJECT_NOT_FOUND.toString(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

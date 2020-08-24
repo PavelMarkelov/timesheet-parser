@@ -1,11 +1,10 @@
 package net.thumbtack.timesheetparser.dao_impl;
 
 import net.thumbtack.timesheetparser.dao.DeveloperProjectsDao;
-import net.thumbtack.timesheetparser.dataBase.DataBase;
+import net.thumbtack.timesheetparser.database.Database;
 import net.thumbtack.timesheetparser.models.Project;
 import net.thumbtack.timesheetparser.models.StaffMember;
 import net.thumbtack.timesheetparser.models.WorkgroupMember;
-import org.apache.commons.collections4.MapIterator;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,9 +17,9 @@ import java.util.stream.Collectors;
 @Component
 public class DeveloperProjectsDaoImpl implements DeveloperProjectsDao {
 
-    private final DataBase database;
+    private final Database database;
 
-    public DeveloperProjectsDaoImpl(DataBase database) {
+    public DeveloperProjectsDaoImpl(Database database) {
         this.database = database;
     }
 
@@ -38,8 +37,8 @@ public class DeveloperProjectsDaoImpl implements DeveloperProjectsDao {
 
     @Override
     public List<Project> getStaffMemberProjects(StaffMember staffMember, int numberOfMonths, int numberOfHours) {
-        LocalDate startTime = LocalDate.now().minusMonths(numberOfMonths);
-        List<Project> projects = (List<Project>) database.getDeveloperProjects().get(staffMember);
+        var startTime = LocalDate.now().minusMonths(numberOfMonths);
+        var projects = (List<Project>) database.getDeveloperProjects().get(staffMember);
         return projects.stream()
                 .filter(project -> project.getEnd().compareTo(startTime) > 0 &&
                         project.getNumberOfHours() >= numberOfHours)
@@ -62,15 +61,15 @@ public class DeveloperProjectsDaoImpl implements DeveloperProjectsDao {
     @Override
     public List<WorkgroupMember> getWorkgroup(StaffMember staffMemberModel, Project project, LocalDate start, LocalDate end) {
         List<WorkgroupMember> workgroupMembers = new ArrayList<>();
-        MapIterator<StaffMember, Project> iterator = database.getDeveloperProjects().mapIterator();
+        var iterator = database.getDeveloperProjects().mapIterator();
         while (iterator.hasNext()) {
-            StaffMember staffMember = iterator.next();
-            Project projectFromDb = iterator.getValue();
+            var staffMember = iterator.next();
+            var projectFromDb = iterator.getValue();
             if (projectFromDb.getName().equalsIgnoreCase(project.getName())) {
-                LocalDate startDate = projectFromDb.getStart();
-                LocalDate endDate = projectFromDb.getEnd();
-                int firstCompare = start.compareTo(endDate);
-                int secondCompare = startDate.compareTo(end);
+                var startDate = projectFromDb.getStart();
+                var endDate = projectFromDb.getEnd();
+                var firstCompare = start.compareTo(endDate);
+                var secondCompare = startDate.compareTo(end);
                 if (firstCompare < 0 && secondCompare < 0) {
                     workgroupMembers.add(new WorkgroupMember(staffMember, startDate,
                             endDate, projectFromDb.getNumberOfHours()));
