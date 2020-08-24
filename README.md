@@ -1,3 +1,3 @@
 # timesheet-parser
 
-Restful appllication for timesheet parsing from xls file
+Restful application for time sheet parsing from xls file
