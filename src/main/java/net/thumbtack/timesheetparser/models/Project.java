@@ -16,11 +16,20 @@ public class Project {
     }
 
     public Project(int countOfTrackingRows, String name, LocalDate start, LocalDate end, double numberOfHours) {
-        this.countOfTrackingRows = countOfTrackingRows;
         this.name = name;
         this.start = start;
         this.end = end;
+        this.countOfTrackingRows = countOfTrackingRows;
         this.numberOfHours = numberOfHours;
+    }
+
+    public Project(Project project) {
+        this.id = project.id;
+        this.name = project.name;
+        this.start = project.start;
+        this.end = project.end;
+        this.countOfTrackingRows = project.countOfTrackingRows;
+        this.numberOfHours = project.numberOfHours;
     }
 
     public int getId() {

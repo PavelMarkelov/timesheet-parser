@@ -19,19 +19,14 @@ public class Database {
     private int idForDeveloperProjects = 0;
 
     public void addToDeveloperProjectsCollection(String developer, Project project) {
-        var first = developerProjects.keySet().stream()
-                .filter(staffMember -> staffMember.getName().equalsIgnoreCase(developer))
-                .findFirst();
-        if (first.isEmpty()) {
-            idForDeveloperProjects++;
-        }
         var staffMember = new StaffMember(idForDeveloperProjects, developer);
+        if (!developerProjects.containsKey(staffMember)) {
+            idForDeveloperProjects++;
+            staffMember.setId(idForDeveloperProjects);
+        }
         var projects = new ArrayList<>(developerProjects.get(staffMember));
         var projectId = projects.isEmpty() ? 1 : projects.size() + 1;
         project.setId(projectId);
-        if (developerProjects.isEmpty()) {
-            project.setId(1);
-        }
         developerProjects.put(staffMember, project);
     }
 
