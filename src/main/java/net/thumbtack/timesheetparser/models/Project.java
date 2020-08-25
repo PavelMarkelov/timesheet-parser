@@ -24,12 +24,16 @@ public class Project {
     }
 
     public Project(Project project) {
-        this.id = project.id;
         this.name = project.name;
         this.start = project.start;
         this.end = project.end;
         this.countOfTrackingRows = project.countOfTrackingRows;
         this.numberOfHours = project.numberOfHours;
+    }
+
+    public Project(int id, Project project) {
+        this(project);
+        this.id = id;
     }
 
     public int getId() {

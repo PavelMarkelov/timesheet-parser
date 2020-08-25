@@ -70,12 +70,14 @@ public class DeveloperProjectsDaoImpl implements DeveloperProjectsDao {
                 var endDate = projectFromDb.getEnd();
                 var firstCompare = start.compareTo(endDate);
                 var secondCompare = startDate.compareTo(end);
-                if (firstCompare < 0 && secondCompare < 0) {
+                if (firstCompare < 0 && secondCompare < 0 &&
+                        !staffMemberModel.getName().equalsIgnoreCase(staffMember.getName())) {
                     workgroupMembers.add(new WorkgroupMember(staffMember, startDate,
                             endDate, projectFromDb.getNumberOfHours()));
                 }
             }
         }
+        workgroupMembers.sort(Comparator.comparing(workgroupMember -> workgroupMember.getWorkgroupMember().getName()));
         return workgroupMembers;
     }
 
