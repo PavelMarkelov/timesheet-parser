@@ -18,6 +18,13 @@ public class WorkgroupMember {
         this.numberOfHours = numberOfHours;
     }
 
+    public WorkgroupMember(StaffMember workgroupMember, Project project) {
+        this.workgroupMember = workgroupMember;
+        this.start = project.getStart();
+        this.end = project.getEnd();
+        this.numberOfHours = project.getNumberOfHours();
+    }
+
     public StaffMember getWorkgroupMember() {
         return workgroupMember;
     }

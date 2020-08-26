@@ -45,8 +45,9 @@ public class InitDatabase {
 
         database.put(staffMember3, new Project(3, project2));
         database.put(staffMember2, new Project(3, project2));
-        project2.setStart(startDate.minusMonths(2));
-        project2.setEnd(endDate.minusMonths(5));
-        database.put(staffMember, new Project(3, project2));
+        Project project = new Project(3, project2);
+        project.setStart(LocalDate.now().minusMonths(6));
+        project.setEnd(LocalDate.now().minusMonths(5));
+        database.put(staffMember, new Project(3, project));
     }
 }

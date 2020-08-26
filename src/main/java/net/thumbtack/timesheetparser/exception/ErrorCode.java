@@ -8,7 +8,7 @@ public enum ErrorCode {
     IO_ERROR("Something went wrong. Try uploading the file again"),
     FIELD_ERROR("Field error"),
     STAFF_MEMBER_NOT_FOUND("Staff member with specified name is not found"),
-    FILE_N_LOAD("Excel file not loaded"),
+    FILE_NOT_LOAD("Excel file not loaded"),
     PROJECT_NOT_FOUND("Project not found");
 
     private String errorString;

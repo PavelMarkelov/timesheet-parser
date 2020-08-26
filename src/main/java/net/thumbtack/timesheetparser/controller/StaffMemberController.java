@@ -58,7 +58,7 @@ public class StaffMemberController {
     @ExceptionHandler(FileNotLoadedException.class)
     public ResponseEntity<ValidationErrorsDto> handleFileNotLoadedException(FileNotLoadedException ex) {
         ValidationErrorsDto error = new ValidationErrorsDto();
-        error.addFieldError(ErrorCode.FILE_N_LOAD, ErrorCode.FILE_N_LOAD.toString(), ex.getMessage());
+        error.addFieldError(ErrorCode.FILE_NOT_LOAD, ErrorCode.FILE_NOT_LOAD.toString(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
