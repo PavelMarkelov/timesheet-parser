@@ -5,7 +5,7 @@ spring:
       max-file-size: 150MB
       max-request-size: 150MB
   profiles:
-    active: dev
+    active: test
 server:
   port: 8081
   servlet:

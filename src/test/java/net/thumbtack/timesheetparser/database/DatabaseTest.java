@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseTest {
 
-    Database database = new Database();
+    DatabaseImpl database = new DatabaseImpl();
 
     @Test
     void addToDeveloperProjectsCollection() {

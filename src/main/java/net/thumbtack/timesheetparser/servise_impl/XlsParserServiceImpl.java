@@ -34,6 +34,7 @@ public class XlsParserServiceImpl implements XlsParserService {
         var sheet = workbook.getSheetAt(0);
         var firstRowNum = sheet.getFirstRowNum();
         var columnsIndexes = getColumnsIndexes(sheet.getRow(firstRowNum));
+        developerProjectsDao.clearDatabase();
         var projectNameColumnInd = columnsIndexes[0];
         var staffMemberColumnInd = columnsIndexes[1];
         var dateColumnInd = columnsIndexes[2];

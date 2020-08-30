@@ -23,4 +23,6 @@ public interface DeveloperProjectsDao {
     List<WorkgroupMember> getWorkgroup(StaffMember staffMember, Project project, LocalDate start, LocalDate end);
 
     Optional<StaffMember> getStaffMemberById(int staffMemberId);
+
+    void clearDatabase();
 }

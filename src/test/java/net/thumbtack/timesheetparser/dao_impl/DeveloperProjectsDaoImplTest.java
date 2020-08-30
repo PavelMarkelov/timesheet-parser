@@ -1,16 +1,12 @@
 package net.thumbtack.timesheetparser.dao_impl;
 
 import net.thumbtack.timesheetparser.data.InitDatabase;
-import net.thumbtack.timesheetparser.database.Database;
+import net.thumbtack.timesheetparser.database.DatabaseImpl;
 import net.thumbtack.timesheetparser.models.Project;
-import net.thumbtack.timesheetparser.models.StaffMember;
 import net.thumbtack.timesheetparser.models.WorkgroupMember;
-import org.apache.commons.collections4.MultiValuedMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -21,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DeveloperProjectsDaoImplTest {
 
     private static final InitDatabase initDatabase = new InitDatabase();
-    private static final Database database = mock(Database.class);
+    private static final DatabaseImpl database = mock(DatabaseImpl.class);
     private static final DeveloperProjectsDaoImpl daoImpl = new DeveloperProjectsDaoImpl(database);
 
     @BeforeAll

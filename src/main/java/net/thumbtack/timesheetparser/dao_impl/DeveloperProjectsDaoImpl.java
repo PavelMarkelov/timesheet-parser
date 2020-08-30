@@ -87,4 +87,9 @@ public class DeveloperProjectsDaoImpl implements DeveloperProjectsDao {
                 .filter(staffMember -> staffMember.getId() == staffMemberId)
                 .findFirst();
     }
+
+    @Override
+    public void clearDatabase() {
+        database.clearData();
+    }
 }
