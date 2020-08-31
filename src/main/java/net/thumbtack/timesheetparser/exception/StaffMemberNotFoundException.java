@@ -1,6 +1,6 @@
 package net.thumbtack.timesheetparser.exception;
 
-public class StaffMemberNotFoundException extends RuntimeException {
+public class StaffMemberNotFoundException extends Exception {
     public StaffMemberNotFoundException(String message) {
         super(message);
     }

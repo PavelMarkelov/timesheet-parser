@@ -1,6 +1,6 @@
 package net.thumbtack.timesheetparser.exception;
 
-public class ProjectNotFoundException extends RuntimeException {
+public class ProjectNotFoundException extends Exception {
     public ProjectNotFoundException(String message) {
         super(message);
     }

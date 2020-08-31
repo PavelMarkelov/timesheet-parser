@@ -43,7 +43,7 @@ class StaffMemberServiceImplTest {
     }
 
     @Test
-    void getProjects() {
+    void getProjects() throws StaffMemberNotFoundException, FileNotLoadedException {
         when(daoImpl.getStaffMemberByName(staffMember))
                 .thenReturn(Optional.of(initDatabase.staffMember));
         when((daoImpl.getStaffMemberProjects(initDatabase.staffMember, numberOfMonths, numberOfHours)))
@@ -74,7 +74,7 @@ class StaffMemberServiceImplTest {
     }
 
     @Test
-    void getWorkgroup() {
+    void getWorkgroup() throws ProjectNotFoundException, FileNotLoadedException, StaffMemberNotFoundException {
         Project project = new Project(1, project1);
         LocalDate start = project.getStart();
         LocalDate end = project.getEnd();

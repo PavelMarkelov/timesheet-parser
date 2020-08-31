@@ -32,13 +32,13 @@ public class StaffMemberController {
     }
 
     @GetMapping()
-    public StaffMemberResponse getProjects(@Valid StaffMemberRequest request) {
+    public StaffMemberResponse getProjects(@Valid StaffMemberRequest request) throws StaffMemberNotFoundException, FileNotLoadedException {
         return staffMemberService.getProjects(request.getStaffMemberName(),
                 request.getNumberOfMonths(), request.getNumberOfHours());
     }
 
     @GetMapping("/workgroup")
-    public List<WorkgroupMember> getWorkgroup(@Valid WorkgroupRequest request) {
+    public List<WorkgroupMember> getWorkgroup(@Valid WorkgroupRequest request) throws ProjectNotFoundException, FileNotLoadedException, StaffMemberNotFoundException {
         return staffMemberService.getWorkgroup(request.getStaffMemberId(), request.getProjectId());
     }
 

@@ -29,16 +29,12 @@ public class XlsParserServiceImpl implements XlsParserService {
     }
 
     @Override
-    public void parseXls(MultipartFile file) throws IOException {
+    public void parseXls(MultipartFile file) throws IOException, InvalidHeadRowException {
         var workbook = WorkbookFactory.create(file.getInputStream());
         var sheet = workbook.getSheetAt(0);
         var firstRowNum = sheet.getFirstRowNum();
         var columnsIndexes = getColumnsIndexes(sheet.getRow(firstRowNum));
         developerProjectsDao.clearDatabase();
-        var projectNameColumnInd = columnsIndexes[0];
-        var staffMemberColumnInd = columnsIndexes[1];
-        var dateColumnInd = columnsIndexes[2];
-        var numberOfHoursColumnInd = columnsIndexes[3];
         var previousDeveloperName = "";
         var projectName = "";
         var previousProjectName = "";
@@ -49,18 +45,9 @@ public class XlsParserServiceImpl implements XlsParserService {
         var numberOfHours = 0.0;
         for (int i = firstRowNum + 2; sheet.getRow(i) != null; i++) {
             var row = sheet.getRow(i);
-            var projectNameCellOpt = Optional.ofNullable(row.getCell(projectNameColumnInd));
-            var developerNameCellOpt = Optional.ofNullable(row.getCell(staffMemberColumnInd));
-            var dateCellOpt = Optional.ofNullable(row.getCell(dateColumnInd));
-            var numberOfHoursOpt = Optional.ofNullable(row.getCell(numberOfHoursColumnInd));
-            var isPresentData = projectNameCellOpt.isPresent() && developerNameCellOpt.isPresent() &&
-                    dateCellOpt.isPresent() && numberOfHoursOpt.isPresent();
-            if (isPresentData && projectNameCellOpt.get().getCellType().equals(CellType.STRING) &&
-                    developerNameCellOpt.get().getCellType().equals(CellType.STRING) &&
-                    DateUtil.isCellDateFormatted(dateCellOpt.get()) &&
-                    numberOfHoursOpt.get().getCellType().equals(CellType.NUMERIC)) {
-                projectName = projectNameCellOpt.get().getRichStringCellValue().getString();
-                developerName = developerNameCellOpt.get().getRichStringCellValue().getString();
+            if (isValidDataInRow(row, columnsIndexes)) {
+                projectName = row.getCell(columnsIndexes[0]).getRichStringCellValue().getString();
+                developerName = row.getCell(columnsIndexes[1]).getRichStringCellValue().getString();
                 if (!developerName.equals(previousDeveloperName)) {
                     if (!StringUtils.isEmpty(previousDeveloperName)) {
                         if (numberRowsForCurrentDeveloperInCurrentProject == 1) {
@@ -74,11 +61,11 @@ public class XlsParserServiceImpl implements XlsParserService {
                     }
                     previousProjectName = projectName;
                     previousDeveloperName = developerName;
-                    startDate = dateCellOpt.get().getLocalDateTimeCellValue().toLocalDate();
+                    startDate = row.getCell(columnsIndexes[2]).getLocalDateTimeCellValue().toLocalDate();
                 }
-                endDate = dateCellOpt.get().getLocalDateTimeCellValue().toLocalDate();
+                endDate = row.getCell(columnsIndexes[2]).getLocalDateTimeCellValue().toLocalDate();
                 numberRowsForCurrentDeveloperInCurrentProject++;
-                numberOfHours += numberOfHoursOpt.get().getNumericCellValue();
+                numberOfHours += row.getCell(columnsIndexes[3]).getNumericCellValue();
             } else if (sheet.getRow(i + 1) == null) {
                 if (numberRowsForCurrentDeveloperInCurrentProject == 1) {
                     endDate = startDate;
@@ -86,12 +73,11 @@ public class XlsParserServiceImpl implements XlsParserService {
                 Project projectModel = new Project(numberRowsForCurrentDeveloperInCurrentProject,
                         projectName, startDate, endDate, numberOfHours);
                 developerProjectsDao.save(developerName, projectModel);
-                break;
             }
         }
     }
 
-    private int[] getColumnsIndexes(Row headRow) {
+    private int[] getColumnsIndexes(Row headRow) throws InvalidHeadRowException {
         var projectNameColumnInd = -1;
         var staffMemberColumnInd = -1;
         var dateColumnInd = -1;
@@ -117,5 +103,18 @@ public class XlsParserServiceImpl implements XlsParserService {
             throw new InvalidHeadRowException(ErrorCode.INVALID_HEAD_ROW.getErrorString());
         }
         return new int[]{projectNameColumnInd, staffMemberColumnInd, dateColumnInd, numberOfHoursColumnInd};
+    }
+
+    private boolean isValidDataInRow(Row row, int[] columnsIndexes) {
+        var projectNameCellOpt = Optional.ofNullable(row.getCell(columnsIndexes[0]));
+        var developerNameCellOpt = Optional.ofNullable(row.getCell(columnsIndexes[1]));
+        var dateCellOpt = Optional.ofNullable(row.getCell(columnsIndexes[2]));
+        var numberOfHoursOpt = Optional.ofNullable(row.getCell(columnsIndexes[3]));
+        var isPresentData = projectNameCellOpt.isPresent() && developerNameCellOpt.isPresent() &&
+                dateCellOpt.isPresent() && numberOfHoursOpt.isPresent();
+        return isPresentData && projectNameCellOpt.get().getCellType().equals(CellType.STRING) &&
+                developerNameCellOpt.get().getCellType().equals(CellType.STRING) &&
+                DateUtil.isCellDateFormatted(dateCellOpt.get()) &&
+                numberOfHoursOpt.get().getCellType().equals(CellType.NUMERIC);
     }
 }

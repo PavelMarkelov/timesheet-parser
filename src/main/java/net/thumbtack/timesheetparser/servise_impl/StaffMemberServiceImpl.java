@@ -25,7 +25,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     }
 
     @Override
-    public StaffMemberResponse getProjects(String staffMember, int numberOfMonths, int numberOfHours) {
+    public StaffMemberResponse getProjects(String staffMember, int numberOfMonths, int numberOfHours) throws StaffMemberNotFoundException, FileNotLoadedException {
         if(developerProjectsDao.isEmptyDatabase()) {
             throw new FileNotLoadedException(ErrorCode.FILE_NOT_LOAD.getErrorString());
         }
@@ -39,7 +39,7 @@ public class StaffMemberServiceImpl implements StaffMemberService {
     }
 
     @Override
-    public List<WorkgroupMember> getWorkgroup(int staffMemberId, int projectId) {
+    public List<WorkgroupMember> getWorkgroup(int staffMemberId, int projectId) throws ProjectNotFoundException, StaffMemberNotFoundException, FileNotLoadedException {
         if(developerProjectsDao.isEmptyDatabase()) {
             throw new FileNotLoadedException(ErrorCode.FILE_NOT_LOAD.getErrorString());
         }

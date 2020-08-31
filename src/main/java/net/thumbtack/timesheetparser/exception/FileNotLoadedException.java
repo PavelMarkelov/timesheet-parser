@@ -1,6 +1,6 @@
 package net.thumbtack.timesheetparser.exception;
 
-public class FileNotLoadedException extends RuntimeException {
+public class FileNotLoadedException extends Exception {
     public FileNotLoadedException(String message) {
         super(message);
     }

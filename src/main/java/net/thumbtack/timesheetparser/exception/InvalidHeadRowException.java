@@ -1,6 +1,6 @@
 package net.thumbtack.timesheetparser.exception;
 
-public class InvalidHeadRowException extends RuntimeException {
+public class InvalidHeadRowException extends Exception {
 
     public InvalidHeadRowException(String message) {
         super(message);
