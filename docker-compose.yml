@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  timesheet-parser-app:
+    container_name: timesheet-parser-app
+    image: timesheet-parser-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8081:8081"
