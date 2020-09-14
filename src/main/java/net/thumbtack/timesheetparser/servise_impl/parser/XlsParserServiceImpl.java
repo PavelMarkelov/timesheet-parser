@@ -48,9 +48,12 @@ public class XlsParserServiceImpl implements XlsParserService {
                 developer.addHours(data.getNumberOfHours());
 
             } catch (final InvalidPropertiesFormatException e) {
-                saveDeveloper(developer);
+                // TODO: Do something
             }
         }
+
+        // This is wrong
+        saveDeveloper(developer);
     }
 
     private void saveDeveloper(final Developer developer) {
