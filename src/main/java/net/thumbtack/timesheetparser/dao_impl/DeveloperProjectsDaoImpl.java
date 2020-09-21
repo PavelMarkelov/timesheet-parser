@@ -5,6 +5,7 @@ import net.thumbtack.timesheetparser.database.Database;
 import net.thumbtack.timesheetparser.models.Project;
 import net.thumbtack.timesheetparser.models.StaffMember;
 import net.thumbtack.timesheetparser.models.WorkgroupMember;
+import net.thumbtack.timesheetparser.servise_impl.parser.Developer;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -24,8 +25,8 @@ public class DeveloperProjectsDaoImpl implements DeveloperProjectsDao {
     }
 
     @Override
-    public void save(String developerName, Project project) {
-        database.addToDeveloperProjectsCollection(developerName, project);
+    public void save(Developer developer) {
+        database.addToDeveloperProjectsCollection(developer.getName(), developer.getProject());
     }
 
     @Override
