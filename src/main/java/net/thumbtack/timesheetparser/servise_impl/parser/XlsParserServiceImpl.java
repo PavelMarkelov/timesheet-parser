@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class XlsParserServiceImpl implements XlsParserService {
@@ -23,9 +24,9 @@ public class XlsParserServiceImpl implements XlsParserService {
     public void parseXls(MultipartFile file) throws IOException, InvalidHeadRowException {
         developerProjectsDao.clearDatabase();
 
-        var workbook = WorkbookFactory.create(file.getInputStream());
-        var sheet = workbook.getSheetAt(0);
-        var firstRowNum = sheet.getFirstRowNum();
+        Workbook workbook = WorkbookFactory.create(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+        int firstRowNum = sheet.getFirstRowNum();
 
         final Row header = sheet.getRow(firstRowNum);
         final RowDataReader dataReader = RowDataReader.createFromHeader(header);
@@ -46,6 +47,7 @@ public class XlsParserServiceImpl implements XlsParserService {
                 // Update current developer
                 developer.setEndDate(data.getDate());
                 developer.addHours(data.getNumberOfHours());
+                developer.incCountOfTrackingRows();
 
             } catch (final InvalidPropertiesFormatException e) {
                 // TODO: Do something
@@ -57,6 +59,6 @@ public class XlsParserServiceImpl implements XlsParserService {
     }
 
     private void saveDeveloper(final Developer developer) {
-        // TODO: Optional.ofNullable(developer).ifPresent(developerProjectsDao::save);
+        Optional.ofNullable(developer).ifPresent(developerProjectsDao::save);
     }
 }

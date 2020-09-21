@@ -1,5 +1,7 @@
 package net.thumbtack.timesheetparser.servise_impl.parser;
 
+import net.thumbtack.timesheetparser.models.Project;
+
 import java.time.LocalDate;
 
 public class Developer {
@@ -10,6 +12,7 @@ public class Developer {
 
   private LocalDate endDate;
   private double numberOfHours = 0;
+  private int countOfTrackingRows;
 
   public Developer(final String name, final String projectName, final LocalDate startDate) {
     this.name = name;
@@ -23,6 +26,10 @@ public class Developer {
 
   public void addHours(final double numberOfHours) {
     this.numberOfHours += numberOfHours;
+  }
+
+  public void incCountOfTrackingRows() {
+    countOfTrackingRows++;
   }
 
   public void setEndDate(final LocalDate endDate) {
@@ -43,5 +50,9 @@ public class Developer {
 
   public double getNumberOfHours() {
     return numberOfHours;
+  }
+
+  public Project getProject() {
+    return new Project(countOfTrackingRows, projectName, startDate, endDate, numberOfHours);
   }
 }

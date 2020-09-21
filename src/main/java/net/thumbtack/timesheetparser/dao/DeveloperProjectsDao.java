@@ -3,6 +3,7 @@ package net.thumbtack.timesheetparser.dao;
 import net.thumbtack.timesheetparser.models.Project;
 import net.thumbtack.timesheetparser.models.StaffMember;
 import net.thumbtack.timesheetparser.models.WorkgroupMember;
+import net.thumbtack.timesheetparser.servise_impl.parser.Developer;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public interface DeveloperProjectsDao {
 
-    void save(String developerName, Project project);
+    void save(Developer developer);
 
     Optional<StaffMember> getStaffMemberByName(String name);
 
