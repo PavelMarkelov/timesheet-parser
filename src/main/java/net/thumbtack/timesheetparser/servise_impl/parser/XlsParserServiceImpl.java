@@ -35,19 +35,22 @@ public class XlsParserServiceImpl implements XlsParserService {
 
         for (int i = firstRowNum + 2; sheet.getRow(i) != null; i++) {
             try {
-                final RowData data = dataReader.readData(sheet.getRow(i));
-                final String developerName = data.getStaffMember();
-                final boolean isNewDeveloper = developer == null || !developerName.equals(developer.getName());
+                final Optional<RowData> dataOpt = dataReader.readData(sheet.getRow(i));
+                if (dataOpt.isPresent()) {
+                    final RowData data = dataOpt.get();
+                    final String developerName = data.getStaffMember();
+                    final boolean isNewDeveloper = developer == null || !developerName.equals(developer.getName());
 
-                if (isNewDeveloper) {
-                    saveDeveloper(developer);
-                    developer = new Developer(developerName, data.getProjectName(), data.getDate());
+                    if (isNewDeveloper) {
+                        saveDeveloper(developer);
+                        developer = new Developer(developerName, data.getProjectName(), data.getDate());
+                    }
+
+                    // Update current developer
+                    developer.setEndDate(data.getDate());
+                    developer.addHours(data.getNumberOfHours());
+                    developer.incCountOfTrackingRows();
                 }
-
-                // Update current developer
-                developer.setEndDate(data.getDate());
-                developer.addHours(data.getNumberOfHours());
-                developer.incCountOfTrackingRows();
 
             } catch (final InvalidPropertiesFormatException e) {
                 // TODO: Do something

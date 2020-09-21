@@ -1,9 +1,13 @@
 package net.thumbtack.timesheetparser.servise_impl.parser;
 
 import java.util.InvalidPropertiesFormatException;
+import java.util.Optional;
+
+import lombok.Getter;
 import net.thumbtack.timesheetparser.exception.InvalidHeadRowException;
 import org.apache.poi.ss.usermodel.Row;
 
+@Getter
 public class RowDataReader {
 
   private static String PROJECT = "Project";
@@ -14,13 +18,13 @@ public class RowDataReader {
   private final int projectIndex;
   private final int staffMemberIndex;
   private final int dateIndex;
-  private final int numberOfHours;
+  private final int numberOfHoursIndex;
 
-  public RowDataReader(int projectIndex, int staffMemberIndex, int dateIndex, int numberOfHours) {
+  public RowDataReader(int projectIndex, int staffMemberIndex, int dateIndex, int numberOfHoursIndex) {
     this.projectIndex = projectIndex;
     this.staffMemberIndex = staffMemberIndex;
     this.dateIndex = dateIndex;
-    this.numberOfHours = numberOfHours;
+    this.numberOfHoursIndex = numberOfHoursIndex;
   }
 
   public static RowDataReader createFromHeader(final Row row) throws InvalidHeadRowException {
@@ -37,15 +41,17 @@ public class RowDataReader {
     return new RowDataReader(projectIndex, staffMemberIndex, dateIndex, numberOfHours);
   }
 
-  public RowData readData(final Row row) throws InvalidPropertiesFormatException {
-    final RowReader reader = new RowReader(row);
-    return new RowData(
-        reader.getString(projectIndex),
-        reader.getString(staffMemberIndex),
-        reader.getDate(dateIndex),
-        reader.getDouble(numberOfHours)
-    );
+  public Optional<RowData> readData(final Row row) throws InvalidPropertiesFormatException {
+    final RowReader reader = new RowReader(this, row);
+    if (reader.isValidDataInRow()) {
+      return Optional.of(new RowData(
+          reader.getString(projectIndex),
+          reader.getString(staffMemberIndex),
+          reader.getDate(dateIndex),
+          reader.getDouble(numberOfHoursIndex)
+      ));
+    }
+    return Optional.empty();
   }
-
 
 }
